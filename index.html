@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GST Invoice Creator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="invoice-top">
+        <div class="party left">
+          <h2 contenteditable="true">LINGARAJ AGENCIES</h2>
+          <p contenteditable="true">PLOT NO-402, GANDARPADA, ORISSA</p>
+          <p contenteditable="true">NEAR GANESWAR TEMPLE</p>
+          <p contenteditable="true">PIN - 752054</p>
+          <p contenteditable="true">Phone: +91-99999 99999</p>
+          <p contenteditable="true">GSTIN: 21ABCDE1234F1Z5</p>
+        </div>
+
+        <div class="party right">
+          <h2 contenteditable="true">M/S NIKITA TRADERS</h2>
+          <p contenteditable="true">PAIKRAPUR, JATANI</p>
+          <p contenteditable="true">Dist: KHORDHA</p>
+          <p contenteditable="true">Pin: 752050</p>
+          <p contenteditable="true">GSTIN: 21AIOPK9009N1ZD</p>
+        </div>
+      </header>
+
+      <section class="meta">
+        <h1>GST INVOICE</h1>
+        <div class="meta-grid">
+          <label>Invoice No.<input id="invoiceNo" value="52088" /></label>
+          <label>Date<input id="invoiceDate" type="date" /></label>
+          <label>Salesman<input id="salesman" value="Amit" /></label>
+          <label>Due Date<input id="dueDate" type="date" /></label>
+        </div>
+      </section>
+
+      <section class="table-wrap">
+        <table id="invoiceTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product</th>
+              <th>Pack</th>
+              <th>HSN</th>
+              <th>MRP</th>
+              <th>Qty</th>
+              <th>Unit</th>
+              <th>Free</th>
+              <th>Rate</th>
+              <th>Disc %</th>
+              <th>Taxable</th>
+              <th>GST %</th>
+              <th>GST Amt</th>
+              <th>Amount</th>
+              <th class="no-print">Action</th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody"></tbody>
+        </table>
+      </section>
+
+      <section class="summary">
+        <div class="summary-card">
+          <p>Taxable Total: <strong id="taxableTotal">0.00</strong></p>
+          <p>GST Total: <strong id="gstTotal">0.00</strong></p>
+          <p>Grand Total: <strong id="grandTotal">0.00</strong></p>
+        </div>
+      </section>
+
+      <footer class="actions no-print">
+        <button id="addRowBtn" type="button">+ Add Item</button>
+        <button id="sampleBtn" type="button">Load Sample Items</button>
+        <button id="downloadPdfBtn" type="button">Download PDF</button>
+      </footer>
+    </div>
+
+    <template id="rowTemplate">
+      <tr>
+        <td class="rowNo"></td>
+        <td><input class="product" placeholder="Product name" /></td>
+        <td><input class="pack" type="number" min="0" step="1" value="12" /></td>
+        <td><input class="hsn" placeholder="210690" /></td>
+        <td><input class="mrp" type="number" min="0" step="0.01" value="20" /></td>
+        <td><input class="qty" type="number" min="0" step="1" value="3" /></td>
+        <td><input class="unit" value="BOX" /></td>
+        <td><input class="free" type="number" min="0" step="1" value="0" /></td>
+        <td><input class="rate" type="number" min="0" step="0.01" value="1491.6" /></td>
+        <td><input class="disc" type="number" min="0" step="0.01" value="0" /></td>
+        <td class="taxableCell">0.00</td>
+        <td><input class="gst" type="number" min="0" step="0.01" value="5" /></td>
+        <td class="gstAmtCell">0.00</td>
+        <td class="amountCell">0.00</td>
+        <td class="no-print">
+          <button type="button" class="deleteBtn">Delete</button>
+        </td>
+      </tr>
+    </template>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

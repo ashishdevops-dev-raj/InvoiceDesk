@@ -1,0 +1,176 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Times New Roman", serif;
+  background: #f3f3f3;
+  color: #111;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 24px auto;
+  background: #fff;
+  border: 1px solid #222;
+  padding: 12px;
+}
+
+.invoice-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  border: 1px solid #111;
+  padding: 8px;
+}
+
+.party h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.party p {
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+.meta {
+  border: 1px solid #111;
+  border-top: none;
+  padding: 8px;
+}
+
+.meta h1 {
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #aaa;
+  padding: 5px 6px;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th,
+td {
+  border: 1px solid #111;
+  padding: 4px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+thead th {
+  background: #ececec;
+}
+
+td input {
+  border: none;
+  padding: 2px;
+  text-align: center;
+  background: transparent;
+}
+
+#invoiceTable th:nth-child(2),
+#invoiceTable td:nth-child(2) {
+  min-width: 260px;
+}
+
+#invoiceTable td:nth-child(2) input {
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.summary {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.summary-card {
+  width: 280px;
+  border: 1px solid #111;
+  padding: 8px 10px;
+}
+
+.summary-card p {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+button {
+  border: 1px solid #111;
+  background: #fff;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+button:hover {
+  background: #ececec;
+}
+
+@media (max-width: 900px) {
+  .invoice-top {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .page {
+    margin: 0;
+    border: none;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
