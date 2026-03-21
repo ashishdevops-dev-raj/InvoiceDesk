@@ -15,6 +15,8 @@ const newItemDefaults = {
   qty: "",
   unit: "",
   free: 0,
+  sdis: 0,
+  cd: 0,
   rate: 0,
   disc: 0,
   gst: 0
@@ -36,6 +38,8 @@ function createRow(data = {}) {
   row.querySelector(".qty").value = data.qty ?? 3;
   row.querySelector(".unit").value = data.unit || "BOX";
   row.querySelector(".free").value = data.free ?? 0;
+  row.querySelector(".sdis").value = data.sdis ?? 0;
+  row.querySelector(".cd").value = data.cd ?? 0;
   row.querySelector(".rate").value = data.rate ?? 1491.6;
   row.querySelector(".disc").value = data.disc ?? 0;
   row.querySelector(".gst").value = data.gst ?? 5;
@@ -115,18 +119,31 @@ downloadPdfBtn.addEventListener("click", () => {
   const fileName = `GST-Invoice-${invoiceNo}.pdf`;
   const pageElement = document.querySelector(".page");
   const hideElements = document.querySelectorAll(".no-print");
+  const tableWrap = document.querySelector(".table-wrap");
 
   hideElements.forEach((element) => {
     element.dataset.prevDisplay = element.style.display;
     element.style.display = "none";
   });
+  document.body.classList.add("pdf-export");
+
+  // Expand layout during PDF generation so wide table columns are not clipped.
+  const prevPageMaxWidth = pageElement.style.maxWidth;
+  const prevTableOverflow = tableWrap ? tableWrap.style.overflow : "";
+  const prevTableOverflowX = tableWrap ? tableWrap.style.overflowX : "";
+  pageElement.style.maxWidth = "none";
+  if (tableWrap) {
+    tableWrap.style.overflow = "visible";
+    tableWrap.style.overflowX = "visible";
+  }
 
   const options = {
-    margin: 8,
+    margin: 5,
     filename: fileName,
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+    jsPDF: { unit: "mm", format: "a4", orientation: "landscape" }
   };
 
   html2pdf()
@@ -138,6 +155,12 @@ downloadPdfBtn.addEventListener("click", () => {
         element.style.display = element.dataset.prevDisplay || "";
         delete element.dataset.prevDisplay;
       });
+      document.body.classList.remove("pdf-export");
+      pageElement.style.maxWidth = prevPageMaxWidth;
+      if (tableWrap) {
+        tableWrap.style.overflow = prevTableOverflow;
+        tableWrap.style.overflowX = prevTableOverflowX;
+      }
     });
 });
 

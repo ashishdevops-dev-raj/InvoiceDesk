@@ -41,7 +41,7 @@
         <table id="invoiceTable">
           <thead>
             <tr>
-              <th>#</th>
+              <th>Sn.</th>
               <th>Product</th>
               <th>Pack</th>
               <th>HSN</th>
@@ -49,6 +49,8 @@
               <th>Qty</th>
               <th>Unit</th>
               <th>Free</th>
+              <th>SDis %</th>
+              <th>C.D</th>
               <th>Rate</th>
               <th>Disc %</th>
               <th>Taxable</th>
@@ -87,6 +89,8 @@
         <td><input class="qty" type="number" min="0" step="1" value="3" /></td>
         <td><input class="unit" value="BOX" /></td>
         <td><input class="free" type="number" min="0" step="1" value="0" /></td>
+        <td><input class="sdis" type="number" min="0" step="0.01" value="0" /></td>
+        <td><input class="cd" type="number" min="0" step="0.01" value="0" /></td>
         <td><input class="rate" type="number" min="0" step="0.01" value="1491.6" /></td>
         <td><input class="disc" type="number" min="0" step="0.01" value="0" /></td>
         <td class="taxableCell">0.00</td>
@@ -94,7 +98,7 @@
         <td class="gstAmtCell">0.00</td>
         <td class="amountCell">0.00</td>
         <td class="no-print">
-          <button type="button" class="deleteBtn">Delete</button>
+          <button type="button" class="deleteBtn icon-only-btn" aria-label="Delete item" title="Delete item">&#128465;</button>
         </td>
       </tr>
     </template>
