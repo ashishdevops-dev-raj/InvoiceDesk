@@ -7,6 +7,18 @@ const downloadPdfBtn = document.getElementById("downloadPdfBtn");
 const taxableTotalEl = document.getElementById("taxableTotal");
 const gstTotalEl = document.getElementById("gstTotal");
 const grandTotalEl = document.getElementById("grandTotal");
+const newItemDefaults = {
+  product: "",
+  pack: "",
+  hsn: "210690",
+  mrp: "",
+  qty: "",
+  unit: "",
+  free: 0,
+  rate: 0,
+  disc: 0,
+  gst: 0
+};
 
 function num(value) {
   const parsed = parseFloat(value);
@@ -91,7 +103,7 @@ function loadSampleItems() {
   sample.forEach((item) => createRow(item));
 }
 
-addRowBtn.addEventListener("click", () => createRow());
+addRowBtn.addEventListener("click", () => createRow(newItemDefaults));
 sampleBtn.addEventListener("click", loadSampleItems);
 downloadPdfBtn.addEventListener("click", () => {
   if (typeof html2pdf === "undefined") {
