@@ -3,11 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GST Invoice Creator</title>
+    <meta name="description" content="Create and download GST invoices with SGST/CGST breakdown." />
+    <title>GST Invoice Creator — InvoiceDesk</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#invoice-main">Skip to invoice</a>
     <div class="page">
+      <div class="invoice-billhead-fixed" aria-label="Bill head">
+        <p class="billhead-name">NIKITA TRADERS</p>
+        <p class="billhead-addr">Paikarapur Jatni, Near Niser Khordha-003, Ward No-09, Khordha-752050</p>
+      </div>
+
       <header class="invoice-top">
         <div class="party left">
           <h2 contenteditable="true">LINGARAJ AGENCIES</h2>
@@ -17,93 +24,112 @@
           <p contenteditable="true">Phone: +91-99999 99999</p>
           <p contenteditable="true">GSTIN: 21ABCDE1234F1Z5</p>
         </div>
-
-        <div class="party right">
-          <h2 contenteditable="true">M/S NIKITA TRADERS</h2>
-          <p contenteditable="true">PAIKRAPUR, JATANI</p>
-          <p contenteditable="true">Dist: KHORDHA</p>
-          <p contenteditable="true">Pin: 752050</p>
-          <p contenteditable="true">GSTIN: 21AIOPK9009N1ZD</p>
-        </div>
       </header>
 
-      <section class="meta">
-        <h1>GST INVOICE</h1>
+      <section class="meta" aria-labelledby="invoice-title">
+        <h1 id="invoice-title">GST INVOICE</h1>
         <div class="meta-grid">
-          <label>Invoice No.<input id="invoiceNo" value="52088" /></label>
-          <label>Date<input id="invoiceDate" type="date" /></label>
-          <label>Salesman<input id="salesman" value="Amit" /></label>
-          <label>Due Date<input id="dueDate" type="date" /></label>
+          <div class="meta-field">
+            <label for="invoiceNo">Invoice No.</label>
+            <input id="invoiceNo" type="text" inputmode="numeric" autocomplete="off" value="52088" />
+          </div>
+          <div class="meta-field">
+            <label for="invoiceDate">Date</label>
+            <input id="invoiceDate" type="date" />
+          </div>
         </div>
       </section>
 
-      <section class="table-wrap">
+      <main id="invoice-main">
+      <section class="table-wrap" aria-label="Invoice line items">
         <table id="invoiceTable">
           <thead>
             <tr>
-              <th>Sn.</th>
-              <th>Product</th>
-              <th>Pack</th>
-              <th>HSN</th>
-              <th>MRP</th>
-              <th>Qty</th>
-              <th>Unit</th>
-              <th>Free</th>
-              <th>SDis %</th>
-              <th>C.D</th>
-              <th>Rate</th>
-              <th>Disc %</th>
-              <th>Taxable</th>
-              <th>GST %</th>
-              <th>GST Amt</th>
-              <th>Amount</th>
-              <th class="no-print">Action</th>
+              <th scope="col">Sn.</th>
+              <th scope="col">Product</th>
+              <th scope="col">Pack</th>
+              <th scope="col">HSN</th>
+              <th scope="col">MRP</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Free</th>
+              <th scope="col">Rate</th>
+              <th scope="col">Taxable</th>
+              <th scope="col" title="Total GST; SGST and CGST are each half (e.g. 5% = 2.5% + 2.5%)">GST %</th>
+              <th scope="col">GST Amt</th>
+              <th scope="col">Amount</th>
+              <th scope="col" class="no-print">Action</th>
             </tr>
           </thead>
           <tbody id="itemsBody"></tbody>
         </table>
       </section>
 
-      <section class="summary">
-        <div class="summary-card">
-          <p>Taxable Total: <strong id="taxableTotal">0.00</strong></p>
-          <p>GST Total: <strong id="gstTotal">0.00</strong></p>
-          <p>Grand Total: <strong id="grandTotal">0.00</strong></p>
+      <section class="summary" aria-label="Invoice totals">
+        <div class="summary-card" aria-live="polite" aria-atomic="true">
+          <p class="summary-line"><span>SUB TOTAL</span><strong id="subTotal" class="amount">0.00</strong></p>
+          <p class="summary-line"><span>SGST PAYBLE</span><strong id="sgstTotal" class="amount">0.00</strong></p>
+          <p class="summary-line"><span>CGST PAYBLE</span><strong id="cgstTotal" class="amount">0.00</strong></p>
+          <p class="summary-line"><span>Round Off</span><strong id="roundOff" class="amount">0.00</strong></p>
+          <hr class="summary-rule" />
+          <p class="summary-line summary-grand"><span>GRAND TOTAL</span><strong id="grandTotal" class="amount">0.00</strong></p>
         </div>
+      </section>
+      </main>
+
+      <section class="bank-sign-wrap">
+        <section class="bank-details" spellcheck="false">
+          <p contenteditable="true">Pay To :</p>
+          <p contenteditable="true">Bank Name : Punjab &amp; Sind Bank</p>
+          <p contenteditable="true">Bank Acc No :12471300000244</p>
+          <p contenteditable="true">Bank IFSC code:PSIB0021247</p>
+          <p contenteditable="true">Account Holder's Name: NIKITA TRADERS</p>
+        </section>
+
+        <section class="signatory-fixed">
+          <p>FOR NIKITA TRADER</p>
+          <p>E.&amp;O.E.</p>
+          <p>AUTHORISED SIGNATORY</p>
+          <p><strong>BHARAT KUMAR</strong></p>
+        </section>
       </section>
 
       <footer class="actions no-print">
         <button id="addRowBtn" type="button">+ Add Item</button>
-        <button id="sampleBtn" type="button">Load Sample Items</button>
-        <button id="downloadPdfBtn" type="button">Download PDF</button>
+        <button id="downloadPdfBtn" type="button" aria-busy="false">Download PDF</button>
       </footer>
     </div>
 
     <template id="rowTemplate">
       <tr>
         <td class="rowNo"></td>
-        <td><input class="product" placeholder="Product name" /></td>
+        <td><input class="product" type="text" aria-label="Product" /></td>
         <td><input class="pack" type="number" min="0" step="1" value="12" /></td>
-        <td><input class="hsn" placeholder="210690" /></td>
+        <td><input class="hsn" type="text" aria-label="HSN" /></td>
         <td><input class="mrp" type="number" min="0" step="0.01" value="20" /></td>
         <td><input class="qty" type="number" min="0" step="1" value="3" /></td>
-        <td><input class="unit" value="BOX" /></td>
+        <td><input class="unit" type="text" value="" aria-label="Unit" /></td>
         <td><input class="free" type="number" min="0" step="1" value="0" /></td>
-        <td><input class="sdis" type="number" min="0" step="0.01" value="0" /></td>
-        <td><input class="cd" type="number" min="0" step="0.01" value="0" /></td>
         <td><input class="rate" type="number" min="0" step="0.01" value="1491.6" /></td>
-        <td><input class="disc" type="number" min="0" step="0.01" value="0" /></td>
         <td class="taxableCell">0.00</td>
         <td><input class="gst" type="number" min="0" step="0.01" value="5" /></td>
         <td class="gstAmtCell">0.00</td>
         <td class="amountCell">0.00</td>
         <td class="no-print">
-          <button type="button" class="deleteBtn icon-only-btn" aria-label="Delete item" title="Delete item">&#128465;</button>
+          <button type="button" class="deleteBtn icon-only-btn" aria-label="Delete item" title="Delete item">
+            <svg class="trash-icon" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M9 3v1H4v2h1v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6h1V4h-5V3H9zm0 5h2v9H9V8zm4 0h2v9h-2V8z"
+              />
+            </svg>
+          </button>
         </td>
       </tr>
     </template>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
