@@ -210,12 +210,14 @@ downloadPdfBtn.addEventListener("click", async () => {
     const widthPx = pageElement.scrollWidth;
     const heightPx = pageElement.scrollHeight;
     // html2canvas renders to a bitmap; browsers have max canvas dimensions.
-    const MAX_CANVAS_DIM_PX = 12000;
+    const MAX_CANVAS_DIM_PX = 8000;
+    const dpr = window.devicePixelRatio || 1;
     let scale = PDF_CANVAS_SCALE;
-    if (heightPx > 0) scale = Math.min(scale, MAX_CANVAS_DIM_PX / heightPx);
-    if (widthPx > 0) scale = Math.min(scale, MAX_CANVAS_DIM_PX / widthPx);
+    // html2canvas internally multiplies scale by devicePixelRatio.
+    if (heightPx > 0) scale = Math.min(scale, MAX_CANVAS_DIM_PX / (heightPx * dpr));
+    if (widthPx > 0) scale = Math.min(scale, MAX_CANVAS_DIM_PX / (widthPx * dpr));
     // Keep reducing scale if needed to avoid canvas cropping.
-    scale = Math.max(0.2, scale);
+    scale = Math.max(0.45, scale);
 
     const canvas = await html2canvas(pageElement, {
       scale,
@@ -223,11 +225,9 @@ downloadPdfBtn.addEventListener("click", async () => {
       logging: false,
       backgroundColor: "#ffffff",
       scrollX: 0,
-      scrollY: -window.scrollY,
+      scrollY: 0,
       windowWidth: pageElement.scrollWidth,
-      windowHeight: pageElement.scrollHeight,
-      width: widthPx,
-      height: heightPx
+      windowHeight: pageElement.scrollHeight
     });
 
     const imgData = canvas.toDataURL("image/jpeg", PDF_JPEG_QUALITY);
