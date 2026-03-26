@@ -109,6 +109,24 @@ function recalculateAll() {
 }
 
 addRowBtn.addEventListener("click", () => createRow(newItemDefaults));
+
+function isRowEffectivelyEmpty(row) {
+  const inputs = [...row.querySelectorAll("input")];
+
+  return inputs.every((input) => {
+    const raw = String(input.value ?? "").trim();
+
+    // Text fields: any non-empty text means the row is not empty.
+    if (input.type !== "number") {
+      return raw === "";
+    }
+
+    // Number fields: treat blank or 0 as empty.
+    if (raw === "") return true;
+    const n = Number(raw);
+    return Number.isFinite(n) && n === 0;
+  });
+}
 function addScaledImageToSinglePdfPage(pdf, imgData, marginMm) {
   const pageInnerW = pdf.internal.pageSize.getWidth() - 2 * marginMm;
   const pageInnerH = pdf.internal.pageSize.getHeight() - 2 * marginMm;
@@ -156,6 +174,8 @@ downloadPdfBtn.addEventListener("click", async () => {
   const pageElement = document.querySelector(".page");
   const hideElements = document.querySelectorAll(".no-print");
   const tableWrap = document.querySelector(".table-wrap");
+  const itemRows = [...itemsBody.querySelectorAll("tr")];
+  const emptyItemRows = itemRows.filter((row) => isRowEffectivelyEmpty(row));
 
   const pdfLabelDefault = downloadPdfBtn.textContent;
   downloadPdfBtn.disabled = true;
@@ -165,6 +185,13 @@ downloadPdfBtn.addEventListener("click", async () => {
   hideElements.forEach((element) => {
     element.dataset.prevDisplay = element.style.display;
     element.style.display = "none";
+  });
+
+  // Hide effectively empty rows to keep the rendered canvas small
+  // (prevents cropped PDFs when there are many blank rows).
+  emptyItemRows.forEach((row) => {
+    row.dataset.prevDisplay = row.style.display;
+    row.style.display = "none";
   });
   document.body.classList.add("pdf-export");
 
@@ -180,15 +207,27 @@ downloadPdfBtn.addEventListener("click", async () => {
   try {
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
+    const widthPx = pageElement.scrollWidth;
+    const heightPx = pageElement.scrollHeight;
+    // html2canvas renders to a bitmap; browsers have max canvas dimensions.
+    const MAX_CANVAS_DIM_PX = 12000;
+    let scale = PDF_CANVAS_SCALE;
+    if (heightPx > 0) scale = Math.min(scale, MAX_CANVAS_DIM_PX / heightPx);
+    if (widthPx > 0) scale = Math.min(scale, MAX_CANVAS_DIM_PX / widthPx);
+    // Keep reducing scale if needed to avoid canvas cropping.
+    scale = Math.max(0.2, scale);
+
     const canvas = await html2canvas(pageElement, {
-      scale: PDF_CANVAS_SCALE,
+      scale,
       useCORS: true,
       logging: false,
       backgroundColor: "#ffffff",
       scrollX: 0,
       scrollY: -window.scrollY,
       windowWidth: pageElement.scrollWidth,
-      windowHeight: pageElement.scrollHeight
+      windowHeight: pageElement.scrollHeight,
+      width: widthPx,
+      height: heightPx
     });
 
     const imgData = canvas.toDataURL("image/jpeg", PDF_JPEG_QUALITY);
@@ -206,6 +245,11 @@ downloadPdfBtn.addEventListener("click", async () => {
     alert("Could not create PDF. Try again or use fewer rows.");
   } finally {
     restorePdfUiState(hideElements, pageElement, tableWrap, prevPageMaxWidth, prevTableOverflow, prevTableOverflowX);
+    // Restore hidden empty rows (if any)
+    emptyItemRows.forEach((row) => {
+      row.style.display = row.dataset.prevDisplay || "";
+      delete row.dataset.prevDisplay;
+    });
     downloadPdfBtn.disabled = false;
     downloadPdfBtn.setAttribute("aria-busy", "false");
     downloadPdfBtn.textContent = pdfLabelDefault;
