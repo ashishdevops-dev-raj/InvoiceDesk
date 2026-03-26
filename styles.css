@@ -373,6 +373,11 @@ td input:focus-visible {
 }
 
 @media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
   body {
     background: #fff;
   }
@@ -382,6 +387,85 @@ td input:focus-visible {
     border: none;
     max-width: 100%;
     padding: 0;
+  }
+
+  .table-wrap {
+    overflow: visible !important;
+  }
+
+  .skip-link {
+    display: none !important;
+  }
+
+  /* Compact print so invoices fit on one page when possible */
+  table {
+    font-size: 10px;
+  }
+
+  th,
+  td {
+    padding: 2px;
+  }
+
+  input {
+    padding: 3px 4px;
+    font-size: 12px;
+  }
+
+  td input {
+    padding: 1px 2px;
+    font-size: 10px;
+  }
+
+  .meta h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  .invoice-billhead-fixed {
+    padding: 6px 10px;
+  }
+
+  .invoice-billhead-fixed .billhead-name {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .invoice-billhead-fixed .billhead-addr,
+  .party p,
+  .bank-details p,
+  .signatory-fixed {
+    font-size: 12px;
+  }
+
+  .party h2 {
+    font-size: 18px;
+  }
+
+  .summary-card {
+    width: 300px;
+    padding: 8px 10px;
+  }
+
+  .summary-card p {
+    font-size: 12px;
+    margin: 4px 0;
+  }
+
+  .bank-details,
+  .signatory-fixed {
+    min-height: 0;
+    margin-top: 8px;
+  }
+
+  /* Avoid awkward page splits (still may paginate if too many rows) */
+  .invoice-billhead-fixed,
+  .invoice-top,
+  .meta,
+  .summary,
+  .bank-sign-wrap {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .no-print {

@@ -2,6 +2,7 @@ const itemsBody = document.getElementById("itemsBody");
 const rowTemplate = document.getElementById("rowTemplate");
 const addRowBtn = document.getElementById("addRowBtn");
 const downloadPdfBtn = document.getElementById("downloadPdfBtn");
+const printBtn = document.getElementById("printBtn");
 
 const subTotalEl = document.getElementById("subTotal");
 const sgstTotalEl = document.getElementById("sgstTotal");
@@ -109,6 +110,9 @@ function recalculateAll() {
 }
 
 addRowBtn.addEventListener("click", () => createRow(newItemDefaults));
+printBtn?.addEventListener("click", () => {
+  window.print();
+});
 function addScaledImageToSinglePdfPage(pdf, imgData, marginMm) {
   const pageInnerW = pdf.internal.pageSize.getWidth() - 2 * marginMm;
   const pageInnerH = pdf.internal.pageSize.getHeight() - 2 * marginMm;
