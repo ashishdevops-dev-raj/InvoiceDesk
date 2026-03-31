@@ -141,21 +141,27 @@ table {
 th,
 td {
   border: 1px solid #111;
-  padding: 4px;
+  padding: 6px 4px;
   text-align: center;
+  vertical-align: middle;
   white-space: nowrap;
 }
 
 thead th {
   background: #ececec;
+  vertical-align: middle;
 }
 
 td input {
   border: none;
-  padding: 2px;
+  padding: 4px 4px;
   text-align: center;
   background: transparent;
   color: #111;
+  box-sizing: border-box;
+  line-height: 1.35;
+  min-height: 1.35em;
+  vertical-align: middle;
 }
 
 /* Avoid yellow browser autofill “highlight” on table inputs */
@@ -206,7 +212,7 @@ td input[type="number"]::-webkit-inner-spin-button {
 }
 
 #invoiceTable td:nth-child(2) input {
-  text-align: left;
+  text-align: center;
   white-space: normal;
   overflow-wrap: anywhere;
 }
@@ -410,11 +416,22 @@ body.pdf-export table {
 
 body.pdf-export th,
 body.pdf-export td {
-  padding: 3px;
+  padding: 5px 3px;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1.35;
 }
 
 body.pdf-export td input {
-  padding: 1px 2px;
+  padding: 4px 3px;
+  line-height: 1.35;
+  min-height: 1.35em;
+  vertical-align: middle;
+  text-align: center;
+}
+
+body.pdf-export #invoiceTable td:nth-child(2) input {
+  text-align: center;
 }
 
 body.pdf-export .summary {
